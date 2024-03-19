@@ -1,4 +1,4 @@
-class nexpose::install (
+class rapid7_scan_engine::install (
 
   $component_type,
   $proxy_uri = undef,
@@ -11,46 +11,46 @@ class nexpose::install (
 
   file { 'rapid7_directory':
     ensure => directory,
-    path   => $::nexpose::install_path,
+    path   => $::rapid7_scan_engine::install_path,
     owner  => 'root',
     group  => 'root',
   }
 
-  file { 'nexpose_directory':
+  file { 'rapid7_scan_engine_directory':
     ensure  => directory,
-    path    => "${::nexpose::install_path}/nexpose",
-    require => Exec['install_nexpose'],
+    path    => "${::rapid7_scan_engine::install_path}/rapid7_scan_engine",
+    require => Exec['install_rapid7_scan_engine'],
   }
 
   file { 'response_varfile':
     ensure  => file,
-    path    => $::nexpose::varfile_path,
-    content => template('nexpose/response.varfile.erb'),
+    path    => $::rapid7_scan_engine::varfile_path,
+    content => template('rapid7_scan_engine/response.varfile.erb'),
     mode    => '0750',
     owner   => 'root',
     group   => 'root',
   }
 
-  file { 'nexpose_installer':
-    path    => "${::nexpose::installer_path}",
+  file { 'rapid7_scan_engine_installer':
+    path    => "${::rapid7_scan_engine::installer_path}",
     mode    => '0750',
-    require => Archive["${::nexpose::installer_path}"],
+    require => Archive["${::rapid7_scan_engine::installer_path}"],
     owner   => 'root',
     group   => 'root',
   }
 
-  archive { $::nexpose::installer_path:
-    source       => $::nexpose::installer_uri,
+  archive { $::rapid7_scan_engine::installer_path:
+    source       => $::rapid7_scan_engine::installer_uri,
     require      => File['rapid7_directory'],
-    creates      => $::nexpose::installer_path,
+    creates      => $::rapid7_scan_engine::installer_path,
     cleanup      => false,
     proxy_server => $proxy_uri,
   }
 
-  exec { 'install_nexpose':
-    command => "${::nexpose::installer_path} -q -Dinstall4j.suppressUnattendedReboot=${::nexpose::suppress_reboot} -varfile ${::nexpose::varfile_path}",
+  exec { 'install_rapid7_scan_engine':
+    command => "${::rapid7_scan_engine::installer_path} -q -varfile ${::rapid7_scan_engine::varfile_path}",
     require => File['response_varfile'],
-    creates => "${::nexpose::install_path}/nexpose",
+    creates => "${::rapid7_scan_engine::install_path}/rapid7_scan_engine",
   }
 
 }

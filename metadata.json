@@ -1,5 +1,5 @@
 {
-  "name": "rapid7-nexpose",
+  "name": "rapid7_scan_engine",
   "version": "0.1.0",
   "author": "rapid7",
   "summary": "A module to install Rapid7 Nexpose",
