@@ -1,4 +1,4 @@
-class nexpose::service (
+class rapid7_scan_engine::service (
 
   $service_name,
   $service_enable = true,
@@ -10,8 +10,8 @@ class nexpose::service (
     enable     => $service_enable,
     ensure     => $service_ensure,
     hasstatus  => false,
-    status     => "pgrep ${::nexpose::service_process}",
-    require    => Exec['install_nexpose'],
+    status     => "pgrep ${::rapid7_scan_engine::service_process}",
+    require    => Exec['install_rapid7_scan_engine'],
   }
 
 }
